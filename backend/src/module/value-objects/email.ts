@@ -14,7 +14,7 @@ export class Email extends BaseObjectValue<string> {
         this.validateWithLength(value)
     }
 
-    private validateWithLength(email: string): void {
+    protected validateWithLength(email: string): void {
         const isValidLength = email.length >= this.minimalLength &&
             email.length <= this.maximalLength
 
@@ -23,9 +23,9 @@ export class Email extends BaseObjectValue<string> {
         }
     }
 
-    private validateWithRegex(email: string): void {
-        const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
+    protected validateWithRegex(email: string): void {
+        const emailRegex = /^(([^<>()[\]\\.,:\s@"]+(\.[^<>()[\]\\.,:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        
         const isValidEmail = emailRegex.test(email)
 
         if (!isValidEmail) {
@@ -33,8 +33,5 @@ export class Email extends BaseObjectValue<string> {
         }
     }
 
-    toString(): string {
-        return this.getValue()
-    }
 
 }
