@@ -1,5 +1,5 @@
 import type { EntityInterface } from "../../types/entity-interface"
-import type { MonitorReplyDTO } from "../types"
+import type { MonitorRequestDTO, MonitorReplyDTO } from "../types/dtos"
 import { ID } from "../../value-objects/id"
 import { MonitorName } from "./monitor-name"
 import { Url } from "../../value-objects/url"
@@ -11,57 +11,84 @@ export class MonitorEntity implements EntityInterface<MonitorReplyDTO> {
     private name: MonitorName
     private url: Url
     private isActive: boolean
-    private status: Status | null
+    private status: Status
     private interval: Interval
 
-    constructor({ id, name, url, isActive, status, interval }: {
-        id?: string
+    constructor(props: {
+        id?: string | null
         name: string
         url: string
         isActive: boolean
         status?: string
-        interval?: number
+        interval: number
     }) {
-        this.id = id ? new ID(id) : null
-        this.name = new MonitorName(name)
-        this.url = new Url(url)
-        this.isActive = isActive ?? true
-        this.status = status ? new Status(status) : null
-        this.interval = new Interval(interval || 30)
+        this.id = props.id ? new ID(props.id) : null
+        this.name = new MonitorName(props.name)
+        this.url = new Url(props.url)
+        this.isActive = props.isActive ?? true
+        this.interval = new Interval(props.interval || 30)
+        this.status = new Status(props.status || 'unknown')
     }
 
-    setName(name: string): void {
-        this.name = new MonitorName(name)
+    update(data: Partial<MonitorRequestDTO>): void {
+        if (data.name !== undefined) {
+            this.name = new MonitorName(data.name)
+        }
+
+        if (data.url !== undefined) {
+            this.url = new Url(data.url)
+        }
+
+        if (data.interval !== undefined) {
+            this.interval = new Interval(data.interval)
+        }
+
+        if (data.isActive !== undefined) {
+            if (data.isActive) {
+                this.activate()
+            } else {
+                this.deactivate()
+            }
+        }
     }
 
-    setUrl(url: string): void {
-        this.url = new Url(url)
+    activate(): void {
+        this.isActive = true
+        this.status = new Status('unknown')
     }
 
-    setIsActive(isActive: boolean): void {
-        this.isActive = isActive
+    deactivate(): void {
+        this.isActive = false
+        this.status = new Status('unknown')
     }
 
-    setId(id: string): void {
+    setID(id: string): void {
         this.id = new ID(id)
     }
 
-    setStatus(status: string): void {
-        this.status = new Status(status)
-    }
-
-    setInterval(interval: number): void {
-        this.interval = new Interval(interval)
-    }
-
-    toJSON(): MonitorReplyDTO {
+    getProps(): Partial<MonitorReplyDTO> {
         return {
-            id: this.id!.getValue(),
+            id: this.id?.getValue(),
             name: this.name.getValue(),
             url: this.url.getValue(),
             isActive: this.isActive,
-            status: this.status?.getValue() as "up" | "down" | "unknown" | undefined,
-            interval: this.interval.getValue()
+            status: this.status.getValue(),
+            interval: this.interval.getValue(),
+        }
+    }
+
+    toJSON(): MonitorReplyDTO {
+        if (this.id === null) {
+            throw new Error("Error ID does not exist")
+        }
+
+        return {
+            id: this.id.getValue(),
+            name: this.name.getValue(),
+            url: this.url.getValue(),
+            isActive: this.isActive,
+            status: this.status.getValue(),
+            interval: this.interval.getValue(),
         }
     }
 }
