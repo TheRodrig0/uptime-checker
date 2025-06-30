@@ -9,7 +9,7 @@ export class Interval extends BaseObjectValue<number> {
     }
 
     protected validate(interval: number): void {
-        this.validate(interval)
+        this.validateWithLength(interval)
     }
 
     protected validateWithLength(interval: number): void {
