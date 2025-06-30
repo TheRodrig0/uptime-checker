@@ -9,5 +9,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "fastify": "^5.4.0",
+    "tsx": "^4.20.3"
+  }
 }
