@@ -4,6 +4,6 @@ import { monitorRoutes } from "./monitor-routes"
 
 const routePath: string = "v1/"
 
-export const v1Routes = (app: AppInterface, controllers: AppControllers) => {
+export const RegisterV1Routes = (app: AppInterface, controllers: AppControllers) => {
     app.register(async () => monitorRoutes(app, controllers.monitor), { prefix: routePath })
 }
