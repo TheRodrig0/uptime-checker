@@ -10,61 +10,29 @@ export class InMemoryMonitorRepository implements CrudRepositoryInterface<Monito
     }
 
     async findById(id: ID): Promise<MonitorEntity | null> {
-        const idValue = id.getValue()
-        
-        return this.monitors[idValue] || null
+        return this.monitors[id.getValue()] || null
     }
 
     async create(data: MonitorEntity): Promise<MonitorEntity> {
-        const idLength = 10
-        const id = crypto.randomUUID().slice(0, idLength)
+        const Id = crypto.randomUUID().slice(0, 10)
+        data.setID(Id)
 
-        const monitor = new MonitorEntity({
-            ...data.toJSON(),
-            id: id,                 
-            status: 'unknown'
-        })
-
-        this.monitors[id] = monitor
-        return monitor
+        this.monitors[Id] = data
+        return data
     }
 
-    async update(id: ID, newDataEntity: MonitorEntity): Promise<MonitorEntity | null> {
+    async update(id: ID, data: MonitorEntity): Promise<MonitorEntity | null> {
         const idValue = id.getValue()
-        const existingMonitor = this.monitors[idValue]
-
-        if (!existingMonitor) {
+    
+        if (!this.monitors[idValue]) {
             return null
         }
 
-        const oldProps = existingMonitor.toJSON()
-        const newProps = newDataEntity.toJSON()
-
-        const finalProps = { ...oldProps }
-
-        if (newProps.name !== undefined && newProps.name !== null) {
-            finalProps.name = newProps.name
-        }
-        if (newProps.url !== undefined && newProps.url !== null) {
-            finalProps.url = newProps.url
-        }
-        if (newProps.interval !== undefined && newProps.interval !== null) {
-            finalProps.interval = newProps.interval
-        }
-        if (newProps.isActive !== undefined && newProps.isActive !== null) {
-            finalProps.isActive = newProps.isActive
-        }
-
-        const updatedEntity = new MonitorEntity(finalProps)
-        
-        this.monitors[idValue] = updatedEntity
-        return updatedEntity
+        this.monitors[idValue] = data
+        return data
     }
 
     async delete(id: ID): Promise<void> {
-        const idValue = id.getValue()
-
-        delete this.monitors[idValue]
+        delete this.monitors[id.getValue()]
     }
-
 }
