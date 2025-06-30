@@ -14,7 +14,7 @@ export class InMemoryMonitorRepository implements CrudRepositoryInterface<Monito
     }
 
     async create(data: MonitorEntity): Promise<MonitorEntity> {
-        const Id = crypto.randomUUID().slice(0, 10)
+        const Id = String(crypto.randomUUID()).slice(0, 10)
         data.setID(Id)
 
         this.monitors[Id] = data
@@ -23,7 +23,7 @@ export class InMemoryMonitorRepository implements CrudRepositoryInterface<Monito
 
     async update(id: ID, data: MonitorEntity): Promise<MonitorEntity | null> {
         const idValue = id.getValue()
-    
+
         if (!this.monitors[idValue]) {
             return null
         }
