@@ -21,7 +21,7 @@ export const monitorRoutes = (app: AppInterface, monitorController: MonitorContr
                 .findById(request, reply)
         })
 
-        app.post(routePath, async (request: CreateMonitorRequestType, reply) => {
+        app.post(`${routePath}/`, async (request: CreateMonitorRequestType, reply) => {
             return await monitorController
                 .create(request, reply)
         })
