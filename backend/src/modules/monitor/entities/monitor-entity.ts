@@ -2,7 +2,7 @@ import type { EntityInterface } from "../../types/entity-interface"
 import type { MonitorRequestDTO, MonitorReplyDTO } from "../types/dtos"
 import { ID } from "../../value-objects/id"
 import { MonitorName } from "./monitor-name"
-import { Url } from "../../value-objects/url"
+import { Url } from "../entities/url"
 import { Status } from "./status"
 import { Interval } from "./interval"
 
