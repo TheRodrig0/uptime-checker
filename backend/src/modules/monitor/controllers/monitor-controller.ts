@@ -2,7 +2,13 @@ import type { CrudControllerInterface } from "../../types/crud-controller-interf
 import type { CrudServiceInterface } from "../../types/crud-service-interface"
 import type { ReplyInterface } from "../../../types/common/reply-interface"
 import type { RequestInterface } from "../../../types/common/request-interface"
-import type { MonitorRequestDTO, MonitorReplyDTO} from "../types"
+import type { MonitorRequestDTO, MonitorReplyDTO } from "../types/dtos"
+import type { 
+    CreateMonitorRequestType,
+    FindMonitorByIdRequestType,
+    UpdateMonitorRequestType,
+    DeleteMonitorRequestType
+ } from "../types/requests-types"
 
 export class MonitorController implements CrudControllerInterface<MonitorRequestDTO> {
     constructor(private readonly service: CrudServiceInterface<MonitorRequestDTO, MonitorReplyDTO>) { }
@@ -16,7 +22,7 @@ export class MonitorController implements CrudControllerInterface<MonitorRequest
             })
     }
 
-    async findById(request: RequestInterface<unknown, { id: string }>, reply: ReplyInterface): Promise<ReplyInterface> {
+    async findById(request: FindMonitorByIdRequestType, reply: ReplyInterface): Promise<ReplyInterface> {
         const { id } = request.params
 
         const data = await this.service.findById(id)
@@ -27,15 +33,8 @@ export class MonitorController implements CrudControllerInterface<MonitorRequest
             })
     }
 
-    async create(request: RequestInterface<MonitorRequestDTO>, reply: ReplyInterface): Promise<ReplyInterface> {
-        const { name, url, isActive, interval } = request.body
-
-        const data = await this.service.create({
-            name,
-            url,
-            isActive,
-            interval
-        })
+    async create(request: CreateMonitorRequestType, reply: ReplyInterface): Promise<ReplyInterface> {
+        const data = await this.service.create(request.body)
 
         return reply.code(201)
             .send({
@@ -43,16 +42,10 @@ export class MonitorController implements CrudControllerInterface<MonitorRequest
             })
     }
 
-    async update(request: RequestInterface<MonitorRequestDTO, { id: string }>, reply: ReplyInterface): Promise<ReplyInterface> {
-        const { name, url, isActive, interval } = request.body
+    async update(request: UpdateMonitorRequestType, reply: ReplyInterface): Promise<ReplyInterface> {
         const { id } = request.params
 
-        const data = await this.service.update(id, {
-            name,
-            url,
-            isActive,
-            interval
-        })
+        const data = await this.service.update(id, request.body)
 
         return reply.code(200)
             .send({
@@ -60,7 +53,7 @@ export class MonitorController implements CrudControllerInterface<MonitorRequest
             })
     }
 
-    async delete(request: RequestInterface<unknown, { id: string }>, reply: ReplyInterface): Promise<ReplyInterface> {
+    async delete(request: DeleteMonitorRequestType, reply: ReplyInterface): Promise<ReplyInterface> {
         const { id } = request.params
 
         await this.service.delete(id)
