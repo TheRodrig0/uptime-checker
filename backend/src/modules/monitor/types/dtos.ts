@@ -11,5 +11,5 @@ export interface MonitorReplyDTO {
     url: string,
     isActive: boolean,
     interval: number,
-    status?: "up" | "down" | "unknown",
+    status: string,
 }
