@@ -32,7 +32,9 @@ export class InMemoryMonitorRepository implements CrudRepositoryInterface<Monito
         return data
     }
 
-    async delete(id: ID): Promise<void> {
+    async delete(id: ID): Promise<boolean> {
         delete this.monitors[id.getValue()]
+
+        return true
     }
 }
