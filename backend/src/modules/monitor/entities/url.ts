@@ -1,4 +1,4 @@
-import { BaseObjectValue } from "./base-object-value"
+import { BaseObjectValue } from "../../value-objects/base-object-value"
 
 export class Url extends BaseObjectValue<string> {
     private readonly minimalLength = 10
