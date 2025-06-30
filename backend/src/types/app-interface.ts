@@ -8,9 +8,9 @@ export interface AppInterface {
         callback?: (error: Error | null, address?: string) => void
     ): void
     register(
-        plugin: unknown,
-        options?: Record<string, string | number | boolean>
-    ): void
+        plugin: Function,
+        opts?: Record<string, string | number | boolean>
+    ): Promise<void>
     ready(): Promise<void>
     printRoutes(): string
     setErrorHandler(
