@@ -3,7 +3,7 @@ import type { MonitorDTO, CreateMonitorDTO, UpdateMonitorDTO } from "../types/mo
 import { Monitor } from "../entities/monitor"
 import { TYPES } from "../types/inversify-types"
 import { injectable, inject } from "inversify"
-import { NotFoundError } from "../../shared/utils/custom-errors/not-found-error"
+import { NotFoundError } from "../../shared/custom-errors/not-found-error"
 
 @injectable()
 export class MonitorService implements ICrudService<CreateMonitorDTO, UpdateMonitorDTO, MonitorDTO, { id: string }> {

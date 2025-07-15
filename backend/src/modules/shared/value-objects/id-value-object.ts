@@ -1,4 +1,4 @@
-import { BadRequestError } from "../utils/custom-errors/bad-request-error"
+import { BadRequestError } from "../custom-errors/bad-request-error"
 import { BaseValueObject } from "./base-value-object"
 
 export class ID extends BaseValueObject<string> {

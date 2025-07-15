@@ -1,5 +1,5 @@
 import { BaseValueObject } from "../../shared/value-objects/base-value-object"
-import { BadRequestError } from "../../shared/utils/custom-errors/bad-request-error"
+import { BadRequestError } from "../../shared/custom-errors/bad-request-error"
 
 const statusEnum = {
   UP: 'up',
