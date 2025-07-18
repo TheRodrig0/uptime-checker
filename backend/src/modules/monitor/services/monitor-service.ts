@@ -6,8 +6,8 @@ import { injectable, inject } from "inversify"
 import { NotFoundError } from "../../shared/custom-errors/not-found-error"
 
 @injectable()
-export class MonitorService implements ICrudService<CreateMonitorDTO, UpdateMonitorDTO, MonitorDTO, { id: string }> {
-    constructor(@inject(TYPES.InMemoryMonitorRepository) private readonly repository: ICrudRepository<Monitor, { id: string }>) { }
+export class MonitorService implements ICrudService<CreateMonitorDTO, UpdateMonitorDTO, MonitorDTO, { id: string }>{
+    constructor(@inject(TYPES.MonitorRepository) private readonly repository: ICrudRepository<Monitor, { id: string }>) { }
 
     async findAll(): Promise<MonitorDTO[]> {
         const monitors = await this.repository.findAll()
