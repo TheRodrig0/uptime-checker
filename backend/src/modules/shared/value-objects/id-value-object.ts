@@ -2,8 +2,6 @@ import { BadRequestError } from "../custom-errors/bad-request-error"
 import { BaseValueObject } from "./base-value-object"
 
 export class ID extends BaseValueObject<string> {
-    private readonly length: number = 36
-
     protected validate(value: string): void {
         this.validateWithRegex(value)
     }
