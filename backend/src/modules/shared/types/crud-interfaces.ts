@@ -1,6 +1,6 @@
 import type { IRequest, IReply } from "../../../types/common/http-interfaces"
 
-export interface IBaseController<CreateDTO> {
+export interface IBaseCrudController<CreateDTO> {
     findAll(request: IRequest): Promise<IReply>
     findOne(request: IRequest<unknown, { id: string }>): Promise<IReply>
     create(request: IRequest<CreateDTO>): Promise<IReply>
@@ -18,7 +18,7 @@ export interface IBaseCrudRepository<Entity, UniqueFilter> {
     create(entity: Entity): Promise<Entity>
 }
 
-export interface ICrudController<CreateDTO, UpdateDTO> extends IBaseController<CreateDTO> {
+export interface ICrudController<CreateDTO, UpdateDTO> extends IBaseCrudController<CreateDTO> {
     update(request: IRequest<UpdateDTO, { id: string }>): Promise<IReply>
     delete(request: IRequest<unknown, { id: string }>): Promise<IReply>
 }
