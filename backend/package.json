@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "start": "node dist/server.js",
+    "build": "rimraf dist && tsc",
+    "dev": "tsx watch src/server.ts",
+    "test": "vitest"
   },
   "keywords": [],
   "author": "",
@@ -11,7 +14,10 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^24.0.14",
-    "tsx": "^4.20.3"
+    "rimraf": "^6.0.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "fastify": "^5.4.0",
