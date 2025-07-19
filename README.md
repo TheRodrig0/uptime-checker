@@ -1,4 +1,4 @@
-# uptime-checker
+# Uptime checker
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
@@ -49,9 +49,9 @@ npm test
 ### Endpoints
 | Método | Rota | Descrição |
 |---|---|---|
-| GET | `/monitor` | Lista todos os monitores |
+| GET | `/monitor/` | Lista todos os monitores |
 | GET | `/monitor/:id` | Obtém um monitor específico |
-| POST | `/monitor` | Cria um novo monitor |
+| POST | `/monitor/` | Cria um novo monitor |
 | PATCH | `/monitor/:id` | Atualiza um monitor existente |
 | DELETE | `/monitor/:id` | Remove um monitor |
 
