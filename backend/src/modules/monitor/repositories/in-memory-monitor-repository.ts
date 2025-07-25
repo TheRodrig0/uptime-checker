@@ -5,7 +5,7 @@ export class InMemoryMonitorRepository implements ICrudRepository<Monitor, { id:
     private monitors: Map<string, Monitor> = new Map()
 
     async findAll(): Promise<Monitor[]> {
-        return Array.from(this.monitors.values())
+        return [...this.monitors.values()]
     }
 
     async findOne(filter: { id: string }): Promise<Monitor | null> {
