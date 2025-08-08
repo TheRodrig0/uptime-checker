@@ -1,15 +1,15 @@
-import type { IBaseCrudService, IBaseCrudRepository } from '../shared/types/crud-interfaces'
+import type { IUserService, IUserRepository } from './types/user-interfaces'
 import type { CreateUserDTO, UserDTO } from './types/user-dtos'
 import { UserService } from './services/user-service'
 import { InMemoryUserRepository } from './repositories/in-memory-user-repository'
 import { User } from './entities/user'
 import { Container, ContainerModule } from 'inversify'
-import { TYPES } from './types/inversify-types'
+import { USER_TYPES } from './types/user-inversify-types'
 
 const userModule = new ContainerModule(({ bind }) => {
-    bind<IBaseCrudRepository<User, { email: string }>>(TYPES.UserRepository).to(InMemoryUserRepository)
+    bind<IUserRepository<User>>(USER_TYPES.UserRepository).to(InMemoryUserRepository)
 
-    bind<IBaseCrudService<CreateUserDTO, UserDTO, { email: string }>>(TYPES.UserService).to(UserService)
+    bind<IUserService<CreateUserDTO, UserDTO>>(USER_TYPES.UserService).to(UserService)
 })
 
 const userContainer = new Container()

@@ -1,20 +1,25 @@
-import { IBaseCrudRepository } from "../../shared/types/crud-interfaces"
+import type { IUserRepository } from "../types/user-interfaces"
 import { User } from "../entities/user"
 
-export class InMemoryUserRepository implements IBaseCrudRepository<User, { email: string }> {
-    private users: Map<string, User> = new Map()
+export class InMemoryUserRepository implements IUserRepository<User> {
+    private usersById: Map<string, User> = new Map()
+    private usersByEmail: Map<string, User> = new Map()
 
-    async findOne(filter: { email: string }): Promise<User | null> {
-        const users = [...this.users.values()]
-
-        const filteredUser = users.find(user => user.toJSON().email === filter.email)
-
-        return filteredUser || null
+    async findByOne(email: string): Promise<User | null> {
+        const user = this.usersByEmail.get(email)
+        
+        return user || null
     }
 
-    async create(entity: User): Promise<User> {
-        const { id } = entity.toJSON()
-        this.users.set(id, entity)
+    async create(entity: User): Promise<User | null> {
+        const { id, email } = entity.toJSON()
+
+        if (this.usersById.has(id) || this.usersByEmail.has(email)) {
+            return null
+        }
+
+        this.usersById.set(id, entity)
+        this.usersByEmail.set(email, entity)
 
         return entity
     }
