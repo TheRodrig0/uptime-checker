@@ -1,14 +1,8 @@
-import 'reflect-metadata'
-import type { IRouteDefinition } from "../types/route-definition-interface"
+import type { IRouteDefinition } from "../types/decorators-interfaces"
 
 export const Controller = (prefix: string = ""): ClassDecorator => {
     return (target: object) => {
         Reflect.defineMetadata("prefix", prefix, target)
-        
-        if (Reflect.hasMetadata("routes", target)) {
-            return
-        }
-
         Reflect.defineMetadata("routes", [], target)
     }
 }
