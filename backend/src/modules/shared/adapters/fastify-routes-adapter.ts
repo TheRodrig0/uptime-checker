@@ -1,6 +1,6 @@
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify"
-import type { IReply } from "../../../types/common/http-interfaces"
-import type { IRouteDefinition } from "../types/route-definition-interface"
+import type { IReply } from "../types/http-interfaces"
+import type { IRouteDefinition } from "../types/decorators-interfaces"
 
 type ControllerInstance = { [key: string | symbol]: (...args: any[]) => Promise<IReply> }
 
