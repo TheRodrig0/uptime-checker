@@ -1,18 +1,29 @@
-import type { IRequest, IReply } from "../../../types/common/http-interfaces"
-import type { ICrudController, ICrudService } from "../../shared/types/crud-interfaces"
-import type { MonitorDTO, CreateMonitorDTO, UpdateMonitorDTO } from "../types/monitor-dtos"
-import { TYPES } from "../types/inversify-types"
-import { injectable, inject } from "inversify"
-import { Controller, Get, Patch, Post, Delete } from "../../shared/decorators/routes-decorators"
+import type { CreateMonitorDTO, UpdateMonitorDTO, MonitorDTO } from "../types/monitor-dtos"
+import type { IMonitorService } from "../types/monitor-interface"
+import type { IReply } from "../../shared/types/http-interfaces"
+import { Controller, Get, Post, Patch, Delete } from "../../shared/decorators/routes-decorators"
+import { Body, Params, Query, User } from "../../shared/decorators/request-decorators"
+import { inject, injectable } from "inversify"
+import { MONITOR_TYPES } from "../types/monitor-inversify-types"
 
+@Controller("monitors/")
 @injectable()
-@Controller("/monitor")
-export class MonitorController implements ICrudController<CreateMonitorDTO, UpdateMonitorDTO> {
-    constructor(@inject(TYPES.MonitorService) private readonly service: ICrudService<CreateMonitorDTO, UpdateMonitorDTO, MonitorDTO, { id: string }>) { }
+export class MonitorController {
+    constructor(@inject(MONITOR_TYPES.MonitorService) private readonly monitorService: IMonitorService<CreateMonitorDTO, UpdateMonitorDTO, MonitorDTO>) { }
+
+    @Get("/:id")
+    async findByOne(@Params("id") id: string, @User("id") userId: string): Promise<IReply> {
+        const monitor = await this.monitorService.findByOne(id, userId)
+
+        return {
+            statusCode: 200,
+            body: monitor
+        }
+    }
 
     @Get()
-    async findAll(_request: IRequest): Promise<IReply> {
-        const monitors = await this.service.findAll()
+    async findAll(@Query() query: { status?: string, page?: number }, @User("id") userId: string): Promise<IReply> {
+        const monitors = await this.monitorService.findAll(userId, query)
 
         return {
             statusCode: 200,
@@ -20,45 +31,29 @@ export class MonitorController implements ICrudController<CreateMonitorDTO, Upda
         }
     }
 
-    @Get("/:id")
-    async findOne(request: IRequest<unknown, { id: string }>): Promise<IReply> {
-        const { id } = request.params
-
-        const monitor = await this.service.findOne({ id })
-
-        return {
-            statusCode: 200,
-            body: monitor
-        }
-    }
-
     @Post()
-    async create(request: IRequest<CreateMonitorDTO>): Promise<IReply> {
-        const monitor = await this.service.create(request.body)
+    async create(@Body() createMonitorDto: CreateMonitorDTO, @User("id") userId: string): Promise<IReply> {
+        const createdMonitor = await this.monitorService.create(userId, createMonitorDto)
 
         return {
             statusCode: 201,
-            body: monitor
+            body: createdMonitor
         }
     }
 
     @Patch("/:id")
-    async update(request: IRequest<UpdateMonitorDTO, { id: string }>): Promise<IReply> {
-        const { id } = request.params
-
-        const monitor = await this.service.update({ id }, request.body)
+    async update(@Body() updateMonitorDto: UpdateMonitorDTO, @Params("id") id: string, @User("id") userId: string): Promise<IReply> {
+        const updatedMonitor = await this.monitorService.update(id, userId, updateMonitorDto)
 
         return {
             statusCode: 200,
-            body: monitor
+            body: updatedMonitor
         }
     }
 
     @Delete("/:id")
-    async delete(request: IRequest<unknown, { id: string }>): Promise<IReply> {
-        const { id } = request.params
-
-        await this.service.delete({ id })
+    async delete(@Params("id") id: string, @User("id") userId: string): Promise<IReply> {
+        await this.monitorService.delete(id, userId)
 
         return {
             statusCode: 204

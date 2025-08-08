@@ -1,18 +1,18 @@
-import type { ICrudController, ICrudService, ICrudRepository } from '../shared/types/crud-interfaces'
+import type { IMonitorService, IMonitorRepository } from './types/monitor-interface'
 import type { MonitorDTO, CreateMonitorDTO, UpdateMonitorDTO } from './types/monitor-dtos'
 import { MonitorController } from './controllers/monitor-controller'
 import { MonitorService } from './services/monitor-service'
 import { InMemoryMonitorRepository } from './repositories/in-memory-monitor-repository'
 import { Monitor } from './entities/monitor'
 import { Container, ContainerModule } from 'inversify'
-import { TYPES } from './types/inversify-types'
+import { MONITOR_TYPES } from './types/monitor-inversify-types'
 
 const monitorModule = new ContainerModule(({ bind }) => {
-    bind<ICrudRepository<Monitor, { id: string }>>(TYPES.MonitorRepository).to(InMemoryMonitorRepository)
+    bind<IMonitorRepository<Monitor>>(MONITOR_TYPES.MonitorRepository).to(InMemoryMonitorRepository)
 
-    bind<ICrudService<CreateMonitorDTO, UpdateMonitorDTO, MonitorDTO, { id: string }>>(TYPES.MonitorService).to(MonitorService)
+    bind<IMonitorService<CreateMonitorDTO, UpdateMonitorDTO, MonitorDTO>>(MONITOR_TYPES.MonitorService).to(MonitorService)
 
-    bind<ICrudController<CreateMonitorDTO, UpdateMonitorDTO>>(TYPES.MonitorController).to(MonitorController)
+    bind(MONITOR_TYPES.MonitorController).to(MonitorController)
 })
 
 const monitorContainer = new Container()
