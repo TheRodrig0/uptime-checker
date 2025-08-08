@@ -2,7 +2,6 @@ import 'fastify'
 
 interface UserPayload {
     id: string
-
 }
 
 declare module 'fastify' {
